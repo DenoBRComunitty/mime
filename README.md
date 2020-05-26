@@ -5,8 +5,6 @@
 
 A comprehensive, compact MIME type module.
 
-[![Build Status](https://travis-ci.org/broofa/node-mime.svg?branch=master)](https://travis-ci.org/broofa/node-mime)
-
 ## Version 2 Notes
 
 Version 2 is a breaking change from 1.x as the semver implies.  Specifically:
@@ -17,91 +15,19 @@ Version 2 is a breaking change from 1.x as the semver implies.  Specifically:
 
 If you prefer the legacy version of this module please `npm install mime@^1`.  Version 1 docs may be found [here](https://github.com/broofa/node-mime/tree/v1.4.0).
 
-## Install
-
-### NPM
-```
-npm install mime
-```
-
-### Browser
-
-It is recommended that you use a bundler such as
-[webpack](https://webpack.github.io/) or [browserify](http://browserify.org/) to
-package your code.  However, browser-ready versions are available via wzrd.in.
-E.g. For the full version:
-
-    <script src="https://wzrd.in/standalone/mime@latest"></script>
-    <script>
-    mime.getType(...); // etc.
-    <script>
-
-Or, for the `mime/lite` version:
-
-    <script src="https://wzrd.in/standalone/mime%2flite@latest"></script>
-    <script>
-    mimelite.getType(...); // (Note `mimelite` here)
-    <script>
-
-## Quick Start
-
-For the full version (800+ MIME types, 1,000+ extensions):
+## Uso | Use
 
 ```javascript
-const mime = require('mime');
+import * as mime from ''
 
 mime.getType('txt');                    // ⇨ 'text/plain'
 mime.getExtension('text/plain');        // ⇨ 'txt'
 ```
 
-See [Mime API](#mime-api) below for API details.
-
-## Lite Version
-
-There is also a "lite" version of this module that omits vendor-specific
-(`*/vnd.*`) and experimental (`*/x-*`) types.  It weighs in at ~2.5KB, compared
-to 8KB for the full version.  To load the lite version:
-
-```javascript
-const mime = require('mime/lite');
-```
-
-## Mime .vs. mime-types .vs. mime-db modules
-
-For those of you wondering about the difference between these [popular] NPM modules,
-here's a brief rundown ...
-
-[`mime-db`](https://github.com/jshttp/mime-db) is "the source of
-truth" for MIME type information.  It is not an API.  Rather, it is a canonical
-dataset of mime type definitions pulled from IANA, Apache, NGINX, and custom mappings
-submitted by the Node.js community.
-
-[`mime-types`](https://github.com/jshttp/mime-types) is a thin
-wrapper around mime-db that provides an API drop-in compatible(ish) with `mime @ < v1.3.6` API.
-
-`mime` is, as of v2, a self-contained module bundled with a pre-optimized version
-of the `mime-db` dataset.  It provides a simplified API with the following characteristics:
-
-* Intelligently resolved type conflicts (See [mime-score](https://github.com/broofa/mime-score) for details)
-* Method naming consistent with industry best-practices
-* Compact footprint.  E.g. The minified+compressed sizes of the various modules:
-
-Module | Size
---- | ---
-`mime-db`  | 18 KB
-`mime-types` | same as mime-db
-`mime` | 8 KB
-`mime/lite` | 2 KB
-
-## Mime API
-
-Both `require('mime')` and `require('mime/lite')` return instances of the MIME
-class, documented below.
-
-Note: Inputs to this API are case-insensitive.  Outputs (returned values) will
-be lowercase.
-
 ### new Mime(typeMap, ... more maps)
+
+A maioria dos usuários deste módulo não precisará criar instâncias do Mime diretamente.
+No entanto, se você deseja criar mapeamentos personalizados, faça o seguinte
 
 Most users of this module will not need to create Mime instances directly.
 However if you would like to create custom mappings, you may do so as follows
@@ -109,7 +35,7 @@ However if you would like to create custom mappings, you may do so as follows
 
 ```javascript
 // Require Mime class
-const Mime = require('mime/Mime');
+import { Mime } from '';
 
 // Define mime type -> extensions map
 const typeMap = {
@@ -123,9 +49,10 @@ myMime.getType('abc');            // ⇨ 'text/abc'
 myMime.getExtension('text/def');  // ⇨ 'leppard'
 ```
 
-If more than one map argument is provided, each map is `define()`ed (see below), in order.
 
 ### mime.getType(pathOrExtension)
+
+Obtenha o tipo mime para o caminho ou extensão especificado. Por exemplo.
 
 Get mime type for the given path or extension.  E.g.
 
@@ -139,6 +66,7 @@ mime.getType('dir\\text.txt');  // ⇨ 'text/plain'
 mime.getType('.text.txt');      // ⇨ 'text/plain'
 mime.getType('.txt');           // ⇨ 'text/plain'
 ```
+`null` é retornado nos casos em que uma extensão não é detectada ou reconhecida
 
 `null` is returned in cases where an extension is not detected or recognized
 
@@ -148,6 +76,9 @@ mime.getType('bogus_type');     // ⇨ null
 ```
 
 ### mime.getExtension(type)
+Obtenha extensão para o tipo mime especificado. Opções de charset (geralmente incluídas em
+Cabeçalhos do tipo de conteúdo) são ignorados.
+
 Get extension for the given mime type.  Charset options (often included in
 Content-Type headers) are ignored.
 
@@ -158,6 +89,13 @@ mime.getExtension('text/html; charset=utf8');  // ⇨ 'html'
 ```
 
 ### mime.define(typeMap[, force = false])
+Defina [mais] mapeamentos de tipo.
+
+`typeMap` é um mapa de type -> extensions, conforme documentado em `new Mime`, acima.
+
+Por padrão, esse método gera um erro se você tentar mapear um tipo para um
+extensão já atribuída a outro tipo. Passando `true`para o argumento `force` 
+suprime esse comportamento (substituindo qualquer mapeamento anterior).
 
 Define [more] type mappings.
 
@@ -174,14 +112,4 @@ mime.getType('abcd');            // ⇨ 'text/x-abc'
 mime.getExtension('text/x-abc')  // ⇨ 'abc'
 ```
 
-## Command Line
-
-    mime [path_or_extension]
-
-E.g.
-
-    > mime scripts/jquery.js
-    application/javascript
-
-----
-Markdown generated from [src/README_js.md](src/README_js.md) by [![RunMD Logo](http://i.imgur.com/h0FVyzU.png)](https://github.com/broofa/runmd)
+## DenoBR
