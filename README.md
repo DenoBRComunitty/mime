@@ -18,7 +18,7 @@ If you prefer the legacy version of this module please `npm install mime@^1`.  V
 ## Uso | Use
 
 ```javascript
-import * as mime from ''
+import * as mime from 'https://raw.githubusercontent.com/DenoBRComunitty/mime/master/mod.js'
 
 mime.getType('txt');                    // ⇨ 'text/plain'
 mime.getExtension('text/plain');        // ⇨ 'txt'
@@ -35,7 +35,7 @@ However if you would like to create custom mappings, you may do so as follows
 
 ```javascript
 // Require Mime class
-import { Mime } from '';
+import { Mime } from 'https://raw.githubusercontent.com/DenoBRComunitty/mime/master/mod.js';
 
 // Define mime type -> extensions map
 const typeMap = {
