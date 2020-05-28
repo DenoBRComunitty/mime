@@ -1,7 +1,7 @@
 <!--
   -- This file is auto-generated from src/README_js.md. Changes should be made there.
   -->
-# Mime
+# Mime | https://denobr.com
 
 A comprehensive, compact MIME type module.
 
